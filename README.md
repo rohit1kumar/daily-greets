@@ -1,6 +1,6 @@
 # Daily Greets
 
-## Shell script to greet the user and display the current date, time, and weather conditions."
+## Shell script to greet the user and display the current date, time, and weather conditions.
 
 ### Installation
 
