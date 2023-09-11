@@ -2,6 +2,7 @@
 
 ## Shell script to greet the user and display the current date, time, and weather conditions.
 
+![terminal's screenshot](https://i.imgur.com/6UXx2q7.png)
 ### Installation
 
 1. Copy the content of `install.sh` to the end of the `~/.profile` file. If `~/.profile` isn't present, paste it at the end of the `~/.bashrc` file.
