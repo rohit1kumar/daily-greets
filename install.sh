@@ -1,35 +1,67 @@
-# Credentials for OpenWeatherMap API
-OPEN_WEATHER_API_KEY="YOUR_API_KEY" # Your API key | required
-CITY="New Delhi"                    # Your city | required
-UNITS="metric"                      # Celsius -> metric, Fahrenheit -> imperial, Kelvin -> standard(default) | optional
-LANG="en"                           # English -> en(default), Hindi -> hi, etc. | optional
+#!/bin/bash
 
-# Display a welcome message
-echo -e "\e[34mWelcome, ${USER[@]^}!😉\e[0m"
+: '
+To uninstall Weatherly, run this script in your terminal:
+rm -rf ~/.weatherly ~/.weatherly_config
+'
 
-# Display the current date and time
-echo -e "\e[36m$(date '+%a, %b %d, %Y %I:%M:%S %p')\e[0m"
-
-# Determine the temperature unit symbol
-if [[ $UNITS == "metric" ]]; then
-    temp_symbol="°C"
-elif [[ $UNITS == "imperial" ]]; then
-    temp_symbol="°F"
-else
-    temp_symbol="K"
+# Check for required dependencies
+if ! command -v curl &>/dev/null; then
+    echo "Error: curl is not installed, to install run: sudo apt install curl"
+    exit 1
+fi
+if ! command -v jq &>/dev/null; then
+    echo "Error: jq is not installed, to install run: sudo apt install jq"
+    exit 1
 fi
 
-# Fetch weather data from OpenWeatherMap API
-weather_data=$(curl --silent --location "https://api.openweathermap.org/data/2.5/weather?q=$CITY&appid=$OPEN_WEATHER_API_KEY&units=$UNITS&lang=$LANG" 2>/dev/null)
+# Prompt user for configuration details
+read -p "API Key: " OPEN_WEATHER_API_KEY
 
-# Parse and display the weather data
-if [[ $weather_data ]]; then
-    desc=$(echo "$weather_data" | jq -r '.weather[0].description')
-    temp=$(echo "$weather_data" | jq -r '.main.temp')
-    city=$(echo "$weather_data" | jq -r '.name')
-    rounded_temp=$(printf "%.0f" $temp)                               # Round off to nearest integer
-    echo -e "\e[32m$city | $rounded_temp$temp_symbol | ${desc^}\e[0m" # Capitalize the first letter of the description
+# Set default city
+read -p "City (default: New Delhi): " CITY
+CITY=${CITY:-"New Delhi"}
+
+# Provide a selection menu for units with default as metric
+echo "1. Metric (C)"
+echo "2. Imperial (F)"
+echo "3. Standard (K)"
+read -p "Choose unit (default: 1 for Metric): " UNIT_CHOICE
+
+case $UNIT_CHOICE in
+1 | "") UNITS="metric" ;;
+2) UNITS="imperial" ;;
+3) UNITS="standard" ;;
+*)
+    echo "Invalid choice. Defaulting to metric."
+    UNITS="metric"
+    ;;
+esac
+
+# Set default language
+echo -e "\e[36mMore language options : https://openweathermap.org/current#multi\e[0m"
+read -p "Language (default: en for English): " LANG
+LANG=${LANG:-"en"}
+
+# Create a configuration file with the provided details
+cat <<EOL >"$HOME/.weatherly_config"
+OPEN_WEATHER_API_KEY="$OPEN_WEATHER_API_KEY"
+CITY="$CITY"
+UNITS="$UNITS"
+LANG="$LANG"
+EOL
+
+# Create a directory for the script
+mkdir -p "$HOME/.weatherly"
+
+# Copy the main script to a suitable location
+SCRIPT_PATH="$HOME/.weatherly/main.sh"
+cp main.sh $SCRIPT_PATH && chmod +x $SCRIPT_PATH
+
+# Add the script to ~/.bashrc
+if ! grep -q "source $SCRIPT_PATH" "$HOME/.bashrc"; then
+    echo -e "\nsource $SCRIPT_PATH" >>"$HOME/.bashrc"
 fi
 
-# Add a separator for clarity
-echo "---------------------------------------------"
+# Success!
+echo "Installed! Restart terminal."
