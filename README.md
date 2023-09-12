@@ -1,13 +1,17 @@
-# Daily Greets
+# Weatherly
 
-## Shell script to greet the user and display the current date, time, and weather conditions.
+###  A shell script for daily greetings, date, time, and weather updates.
 
 ![terminal's screenshot](https://i.imgur.com/6UXx2q7.png)
 ### Installation
 
-1. Copy the content of `install.sh` to the end of the `~/.profile` file. If `~/.profile` isn't present, paste it at the end of the `~/.bashrc` file.
+1. Clone the repository and change the directory
 
-2. Visit [OpenWeather](https://home.openweathermap.org/api_keys) for API key, then udpate the file with the API key, city, units, and language.
+```bash
+git clone https://github.com/rohit1kumar/weatherly.git && cd weatherly
+```
+
+2. Get an API key from [OpenWeather](https://home.openweathermap.org/api_keys), additional [languages](https://openweathermap.org/current#multi) 
 ```bash
 OPEN_WEATHER_API_KEY="YOUR_API_KEY" # Your API key | required
 CITY="New Delhi"                    # Your city | required
@@ -15,11 +19,22 @@ UNITS="metric"                      # metric: C, imperial: F, standard: K (defau
 LANG="en"                           # hi: Hindi, en: English (default)
 ```
 
-3. Install `curl` and `jq` packages using the following commands:
+3. Install `curl` and `jq` packages if not installed already
 
 ```bash
 sudo apt install curl
 sudo apt install jq
 ```
 
-4. Restart the terminal, Enjoy the daily greets :)
+4. Run the script and make it executable and follow the instructions
+```bash
+chmod +x main.sh && ./main.sh
+```
+
+5. Restart the terminal, Enjoy the weather report :)
+
+---
+*Note: To uninstall Weatherly,*
+```bash
+rm -rf ~/.weatherly ~/.weatherly_config
+```
