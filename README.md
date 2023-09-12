@@ -11,7 +11,7 @@
 git clone https://github.com/rohit1kumar/weatherly.git && cd weatherly
 ```
 
-2. Get an API key from [OpenWeather](https://home.openweathermap.org/api_keys), additional [languages](https://openweathermap.org/current#multi) 
+2. Get an API key from [OpenWeather](https://home.openweathermap.org/api_keys), additional [languages](https://openweathermap.org/current#multi)
 ```bash
 OPEN_WEATHER_API_KEY="YOUR_API_KEY" # Your API key | required
 CITY="New Delhi"                    # Your city | required
@@ -34,7 +34,8 @@ chmod +x main.sh && ./main.sh
 5. Restart the terminal, Enjoy the weather report :)
 
 ---
-*Note: To uninstall Weatherly,*
+*Note: To uninstall Weatherly, run*
 ```bash
 rm -rf ~/.weatherly ~/.weatherly_config
 ```
+then open `~/.bashrc` and remove `source /home/$USER/.weatherly/main.sh`
