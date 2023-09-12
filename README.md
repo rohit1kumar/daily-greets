@@ -28,7 +28,7 @@ sudo apt install jq
 
 4. Run the script and make it executable and follow the instructions
 ```bash
-chmod +x main.sh && ./main.sh
+chmod +x install.sh && ./install.sh
 ```
 
 5. Restart the terminal, Enjoy the weather report :)
